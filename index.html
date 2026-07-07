@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reliant Estimate Suite</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <img src="assets/reliant-logo.png" class="logo" alt="Reliant" />
+      <h1>Estimate Suite</h1>
+      <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+      <button class="nav-btn" data-view="project">Project</button>
+      <button class="nav-btn" data-view="estimate">Estimator</button>
+      <button class="nav-btn" data-view="proposal">Proposal</button>
+      <button class="nav-btn" data-view="notes">Notes & Exclusions</button>
+      <button class="nav-btn" data-view="library">Libraries</button>
+      <button class="nav-btn" data-view="settings">Settings</button>
+      <div class="side-note">RES v0.2<br/>Local browser storage</div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">Reliant Construction LLC</div>
+          <h2 id="pageTitle">Dashboard</h2>
+        </div>
+        <div class="actions">
+          <button id="saveBtn">Save</button>
+          <button id="resetDemoBtn" class="ghost">Reset Demo</button>
+        </div>
+      </header>
+
+      <section id="dashboard" class="view active">
+        <div class="cards">
+          <div class="card"><span>Project</span><strong id="dashProject">New Project</strong></div>
+          <div class="card"><span>Proposal Total</span><strong id="dashTotal">$0.00</strong></div>
+          <div class="card"><span>Material</span><strong id="dashMat">$0.00</strong></div>
+          <div class="card"><span>Labor + Equip.</span><strong id="dashLE">$0.00</strong></div>
+        </div>
+        <div class="panel">
+          <h3>Current Workflow</h3>
+          <div class="workflow">
+            <span>Project Info</span><b>→</b><span>Takeoff Quantities</span><b>→</b><span>Material / Labor / Equipment Build-Up</span><b>→</b><span>Notes & Exclusions</span><b>→</b><span>Proposal / Excel Export</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="project" class="view">
+        <div class="panel grid2">
+          <label>Project Name<input id="projectName" /></label>
+          <label>Bid No.<input id="bidNo" /></label>
+          <label>General Contractor<input id="gcName" /></label>
+          <label>Attention<input id="attention" /></label>
+          <label>Project Address<input id="projectAddress" /></label>
+          <label>Date<input id="proposalDate" type="date" /></label>
+          <label>Drawing Reference<textarea id="drawingRef"></textarea></label>
+          <div class="nested-card">
+            <h3>Estimator Contact</h3>
+            <label>Name<input id="estimatorName" /></label>
+            <label>Phone<input id="estimatorPhone" /></label>
+            <label>Email<input id="estimatorEmail" /></label>
+          </div>
+        </div>
+      </section>
+
+      <section id="estimate" class="view">
+        <div class="estimate-layout">
+          <div class="panel library-panel">
+            <h3>Quick Add</h3>
+            <input id="itemSearch" placeholder="Search C900, gate valve, SDR..." />
+            <div id="quickItems" class="quick-list"></div>
+          </div>
+          <div class="panel estimate-panel">
+            <div class="panel-head">
+              <div>
+                <h3>Estimator</h3>
+                <p class="muted">Click a row to expand material, labor, and equipment. Descriptions are edited directly and stay visible.</p>
+              </div>
+              <button id="addBlankLine">+ Blank Line</button>
+            </div>
+            <div id="estimateLines" class="estimate-lines"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="proposal" class="view">
+        <div class="panel-head export-bar">
+          <h3>GC Proposal Preview</h3>
+          <div>
+            <button id="printProposal">Print / Save PDF</button>
+            <button id="exportXlsx">Export Real XLSX</button>
+            <a class="button-like" href="assets/blank-proposal-template-2026.xlsx" download>Blank Template</a>
+          </div>
+        </div>
+        <div id="proposalPreview" class="proposal-sheet"></div>
+      </section>
+
+      <section id="notes" class="view">
+        <div class="notes-layout">
+          <div class="panel">
+            <div class="panel-head"><h3>Proposal Notes</h3><button id="addNote">+ Note</button></div>
+            <div id="noteList"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Exclusions</h3><button id="addExclusion">+ Exclusion</button></div>
+            <div id="exclusionList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="library" class="view">
+        <div class="tabs">
+          <button class="lib-tab active" data-lib="items">Bid Items</button>
+          <button class="lib-tab" data-lib="labor">Labor</button>
+          <button class="lib-tab" data-lib="equipment">Equipment</button>
+          <button class="lib-tab" data-lib="materials">Materials</button>
+        </div>
+        <div id="libItems" class="lib-view active panel grid2">
+          <div>
+            <h3>Add Bid Item</h3>
+            <label>Scope<input id="libScope" placeholder="Water, Sewer, NV Energy..." /></label>
+            <label>Description<input id="libDescription" /></label>
+            <label>Unit<input id="libUnit" placeholder="LF, EA, CY, LS" /></label>
+            <button id="addLibItem">Add Bid Item</button>
+          </div>
+          <div><h3>Bid Item Library</h3><div id="libraryList" class="library-list"></div></div>
+        </div>
+        <div id="libLabor" class="lib-view panel"><h3>Labor Library</h3><div id="laborList"></div></div>
+        <div id="libEquipment" class="lib-view panel"><h3>Equipment / Rental Library</h3><div id="equipmentList"></div></div>
+        <div id="libMaterials" class="lib-view panel"><h3>Material Cost Library</h3><div id="materialList"></div></div>
+      </section>
+
+      <section id="settings" class="view">
+        <div class="panel grid2">
+          <label>Default Tax %<input id="defaultTax" type="number" step="0.01" /></label>
+          <label>Default Markup %<input id="defaultMarkup" type="number" step="0.01" /></label>
+          <label>OH&P %<input id="defaultOHP" type="number" step="0.01" /></label>
+          <label>Company Name<input id="companyName" /></label>
+          <label>License / Bid Limit<textarea id="companyInfo"></textarea></label>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
